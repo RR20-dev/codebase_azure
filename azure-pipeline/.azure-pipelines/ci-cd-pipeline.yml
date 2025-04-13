@@ -1,0 +1,42 @@
+
+ trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  CLUSTER_NAME: 'EksCluster'
+  AWS_REGION: 'us-east-1'
+
+stages:
+- stage: Deploy
+  jobs:
+  - job: DeployToEKS
+    steps:
+    - task: UseNode@1
+      inputs:
+        version: '18.x'
+
+    - task: AWSCLI@1
+      inputs:
+        awsCredentials: '<Your AWS Service Connection>'
+        regionName: $(AWS_REGION)
+		 awsAccessKeyId: $(AWS_ACCESS_KEY_ID) 
+         awsSecretAccessKey: $(AWS_SECRET_ACCESS_KEY)
+
+    - script: |
+        npm install -g aws-cdk
+        cd cdk
+        npm install
+        cdk deploy --require-approval never
+      displayName: 'Deploy CDK Stack'
+
+    - script: |
+        aws eks update-kubeconfig --name $(CLUSTER_NAME) --region $(AWS_REGION)
+      displayName: 'Update kubeconfig'
+
+    - script: |
+        helm upgrade --install httpbin ./hello-api --namespace default
+      displayName: 'Deploy Helm Chart'
+

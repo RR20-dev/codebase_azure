@@ -1,0 +1,12 @@
+{
+  "name": "eks-cdk",
+  "version": "0.1.0",
+  "dependencies": {
+    "aws-cdk-lib": "^2.117.0",
+    "constructs": "^10.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
+
