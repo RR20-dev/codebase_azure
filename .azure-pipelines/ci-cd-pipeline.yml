@@ -23,7 +23,7 @@ stages:
         awsCredentials: '<Your AWS Service Connection>'
         regionName: $(AWS_REGION)
 		 awsAccessKeyId: $(AWS_ACCESS_KEY_ID) 
-         awsSecretAccessKey: $(AWS_SECRET_ACCESS_KEY)
+                 awsSecretAccessKey: $(AWS_SECRET_ACCESS_KEY)
 
     - script: |
         npm install -g aws-cdk
